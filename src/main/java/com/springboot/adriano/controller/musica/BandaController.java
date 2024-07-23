@@ -1,20 +1,22 @@
-package com.springboot.adriano.controller;
+package com.springboot.adriano.controller.musica;
 
-import com.springboot.adriano.dto.BandaGeneroDTO;
-import com.springboot.adriano.dto.BandaRequest;
+import com.springboot.adriano.dto.musica.BandaGeneroDTO;
+import com.springboot.adriano.dto.musica.BandaRequest;
 import com.springboot.adriano.entity.Banda;
 import com.springboot.adriano.service.BandaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class BandaController {
 
     @Autowired

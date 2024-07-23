@@ -1,7 +1,7 @@
 package com.springboot.adriano.service;
 
-import com.springboot.adriano.dto.BandaGeneroDTO;
-import com.springboot.adriano.dto.BandaRequest;
+import com.springboot.adriano.dto.musica.BandaGeneroDTO;
+import com.springboot.adriano.dto.musica.BandaRequest;
 import com.springboot.adriano.entity.Banda;
 import com.springboot.adriano.repository.BandaRepository;
 import com.springboot.adriano.repository.GeneroRepository;

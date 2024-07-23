@@ -1,4 +1,4 @@
-package com.springboot.adriano.dto;
+package com.springboot.adriano.dto.musica;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
