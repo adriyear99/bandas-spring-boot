@@ -1,5 +1,7 @@
 package com.springboot.adriano.entity;
 
+import com.springboot.adriano.enums.Role;
+import com.springboot.adriano.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +32,9 @@ public class Usuario implements UserDetails {
 
     @Column(name = "senha", nullable = false)
     private String senha;
+
+    @Column(name = "status", nullable = false)
+    private Status status;
 
     @Column(name = "data_hora_criacao", nullable = false)
     private LocalDateTime dataHoraCriacao;

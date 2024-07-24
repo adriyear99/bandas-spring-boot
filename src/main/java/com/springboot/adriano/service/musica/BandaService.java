@@ -1,10 +1,10 @@
-package com.springboot.adriano.service;
+package com.springboot.adriano.service.musica;
 
 import com.springboot.adriano.dto.musica.BandaGeneroDTO;
 import com.springboot.adriano.dto.musica.BandaRequest;
 import com.springboot.adriano.entity.Banda;
-import com.springboot.adriano.repository.BandaRepository;
-import com.springboot.adriano.repository.GeneroRepository;
+import com.springboot.adriano.repository.musica.BandaRepository;
+import com.springboot.adriano.repository.musica.GeneroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;

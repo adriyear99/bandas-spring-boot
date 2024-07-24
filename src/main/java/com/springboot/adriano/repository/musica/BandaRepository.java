@@ -1,4 +1,4 @@
-package com.springboot.adriano.repository;
+package com.springboot.adriano.repository.musica;
 
 import com.springboot.adriano.entity.Banda;
 import org.springframework.data.jpa.repository.JpaRepository;
