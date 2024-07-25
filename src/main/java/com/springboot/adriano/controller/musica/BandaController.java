@@ -2,7 +2,7 @@ package com.springboot.adriano.controller.musica;
 
 import com.springboot.adriano.dto.musica.BandaGeneroDTO;
 import com.springboot.adriano.dto.musica.BandaRequest;
-import com.springboot.adriano.entity.Banda;
+import com.springboot.adriano.entity.musica.Banda;
 import com.springboot.adriano.service.musica.BandaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

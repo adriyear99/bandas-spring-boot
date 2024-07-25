@@ -1,0 +1,33 @@
+#spring.application.name=spring-boot-adriano
+#spring.datasource.driver-class-name=org.postgresql.Driver
+#spring.datasource.url=jdbc:postgresql://localhost:5432/adriano
+#spring.datasource.username=postgres
+#spring.datasource.password=password
+#spring.jpa.hibernate.ddl-auto=update
+#spring.jpa.properties.hibernate.format_sql=true
+#spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/adriano
+        username: postgres
+        password: password
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: create
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+        database: postgresql
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+application:
+    security:
+        jwt:
+            secret-key: cd2be5a1b7df5b2713cde5b3d3006bd93849df485577df3a2e0e271d45f97f7d
+            expiration: 86400000 # 1 dia
+            refresh-token:
+                expiration: 604800000 # 7 dias

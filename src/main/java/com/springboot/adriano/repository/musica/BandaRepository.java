@@ -1,6 +1,6 @@
 package com.springboot.adriano.repository.musica;
 
-import com.springboot.adriano.entity.Banda;
+import com.springboot.adriano.entity.musica.Banda;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.springboot.adriano.entity;
+package com.springboot.adriano.entity.musica;
 
 
 import lombok.Data;
@@ -9,12 +9,11 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "banda", schema = "musica")
-@SequenceGenerator(name = "banda_id_seq", sequenceName = "musica.banda_id_seq", allocationSize = 1)
 public class Banda implements Serializable {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "banda_id_seq")
+    @GeneratedValue
     private Long id;
 
     @Column(name = "nome", nullable = false)

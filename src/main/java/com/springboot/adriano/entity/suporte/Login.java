@@ -1,4 +1,4 @@
-package com.springboot.adriano.entity;
+package com.springboot.adriano.entity.suporte;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,11 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "login", schema = "suporte")
-@SequenceGenerator(name = "login_id_seq", sequenceName = "suporte.login_id_seq", allocationSize = 1)
 public class Login {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "login_id_seq")
+    @GeneratedValue
     private Long id;
 
     @Column(name = "email", nullable = false)

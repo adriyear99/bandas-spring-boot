@@ -1,6 +1,6 @@
 package com.springboot.adriano.repository.suporte;
 
-import com.springboot.adriano.entity.Login;
+import com.springboot.adriano.entity.suporte.Login;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

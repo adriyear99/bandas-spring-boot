@@ -1,4 +1,4 @@
-package com.springboot.adriano.entity;
+package com.springboot.adriano.entity.suporte;
 
 import com.springboot.adriano.enums.Role;
 import com.springboot.adriano.enums.Status;
@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -20,11 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "usuario", schema = "suporte")
-@SequenceGenerator(name = "usuario_id_seq", sequenceName = "suporte.usuario_id_seq", allocationSize = 1)
 public class Usuario implements UserDetails {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "email", nullable = false)
@@ -43,9 +40,12 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Token> tokens;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAuthorities();
     }
 
     @Override
