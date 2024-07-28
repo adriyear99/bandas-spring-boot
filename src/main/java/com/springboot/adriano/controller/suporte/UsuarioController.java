@@ -24,23 +24,18 @@ public class UsuarioController {
         return ResponseEntity.ok(service.criarConta(request));
     }
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> authenticate(
-            @RequestBody AuthRequest request
-    ) {
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
         return ResponseEntity.ok(service.autenticar(request));
     }
 
     @PostMapping("/refresh-token")
-    public void refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws IOException {
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         service.refreshToken(request, response);
     }
 
     @PatchMapping
-    public ResponseEntity<?> changePassword(
-            @RequestBody ChangePasswordRequest request, Principal connectedUser) {
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request,
+                                            Principal connectedUser) {
         service.changePassword(request, connectedUser);
         return ResponseEntity.ok().build();
     }

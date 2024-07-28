@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.adriano.dto.suporte.AuthRequest;
 import com.springboot.adriano.dto.suporte.AuthResponse;
 import com.springboot.adriano.dto.suporte.ChangePasswordRequest;
+import com.springboot.adriano.entity.suporte.Login;
 import com.springboot.adriano.entity.suporte.Usuario;
 import com.springboot.adriano.entity.suporte.Token;
 import com.springboot.adriano.enums.Role;
 import com.springboot.adriano.enums.Status;
 import com.springboot.adriano.enums.TokenType;
+import com.springboot.adriano.repository.suporte.LoginRepository;
 import com.springboot.adriano.repository.suporte.TokenRepository;
 import com.springboot.adriano.repository.suporte.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,21 +30,22 @@ import java.time.LocalDateTime;
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final TokenRepository tokenRepository;
+    private final LoginRepository loginRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse criarConta(AuthRequest request) {
-        Usuario user = Usuario.builder()
+        var user = Usuario.builder()
                 .email(request.getEmail())
                 .senha(passwordEncoder.encode(request.getSenha()))
                 .role(Role.USER)
                 .status(Status.ATIVO)
                 .dataHoraCriacao(LocalDateTime.now())
                 .build();
-        Usuario savedUser = usuarioRepository.save(user);
-        String jwtToken = tokenService.gerarToken(user);
-        String refreshToken = tokenService.generateRefreshToken(user);
+        var savedUser = usuarioRepository.save(user);
+        var jwtToken = tokenService.gerarToken(user);
+        var refreshToken = tokenService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
         return AuthResponse.builder()
                 .accessToken(jwtToken)
@@ -52,13 +55,16 @@ public class UsuarioService {
 
     public AuthResponse autenticar(AuthRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getSenha())
-        );
-        Usuario user = usuarioRepository.findByEmail(request.getEmail()).orElseThrow();
-        String jwtToken = tokenService.gerarToken(user);
-        String refreshToken = tokenService.generateRefreshToken(user);
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getSenha()));
+        var user = usuarioRepository.findByEmail(request.getEmail()).orElseThrow();
+        var jwtToken = tokenService.gerarToken(user);
+        var refreshToken = tokenService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
+        loginRepository.save(Login.builder()
+                .email(request.getEmail())
+                .dataHoraLogin(LocalDateTime.now())
+                .build());
         return AuthResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
     }
 

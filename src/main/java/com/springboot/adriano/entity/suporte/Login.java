@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "login", schema = "suporte")
 public class Login {
     @Id
-    @Column(name = "id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "email", nullable = false)
