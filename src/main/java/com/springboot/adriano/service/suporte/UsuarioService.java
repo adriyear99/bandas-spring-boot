@@ -10,6 +10,8 @@ import com.springboot.adriano.entity.suporte.Token;
 import com.springboot.adriano.enums.Role;
 import com.springboot.adriano.enums.Status;
 import com.springboot.adriano.enums.TokenType;
+import com.springboot.adriano.exceptions.AccountExistsException;
+import com.springboot.adriano.exceptions.InvalidCredentialException;
 import com.springboot.adriano.repository.suporte.LoginRepository;
 import com.springboot.adriano.repository.suporte.TokenRepository;
 import com.springboot.adriano.repository.suporte.UsuarioRepository;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,19 +38,27 @@ public class UsuarioService {
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthResponse criarConta(AuthRequest request) {
-        var user = Usuario.builder()
+    public AuthResponse criarConta(AuthRequest request) throws AccountExistsException {
+        Usuario user = Usuario.builder()
                 .email(request.getEmail())
                 .senha(passwordEncoder.encode(request.getSenha()))
                 .role(Role.USER)
                 .status(Status.ATIVO)
                 .dataHoraCriacao(LocalDateTime.now())
                 .build();
-        var savedUser = usuarioRepository.save(user);
-        var jwtToken = tokenService.gerarToken(user);
-        var refreshToken = tokenService.generateRefreshToken(user);
+
+        Optional<Usuario> userExists = usuarioRepository.findByEmail(user.getEmail());
+        if(userExists.isPresent()) {
+            throw new AccountExistsException("Conta já foi cadastrada com este e-mail");
+        }
+
+        Usuario savedUser = usuarioRepository.save(user);
+        String jwtToken = tokenService.gerarToken(user);
+        String refreshToken = tokenService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
         return AuthResponse.builder()
+                .sucesso(true)
+                .msg("Conta cadastrada com sucesso")
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -56,16 +67,21 @@ public class UsuarioService {
     public AuthResponse autenticar(AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getSenha()));
-        var user = usuarioRepository.findByEmail(request.getEmail()).orElseThrow();
-        var jwtToken = tokenService.gerarToken(user);
-        var refreshToken = tokenService.generateRefreshToken(user);
+        Usuario user = usuarioRepository.findByEmail(request.getEmail()).orElseThrow();
+        String jwtToken = tokenService.gerarToken(user);
+        String refreshToken = tokenService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
         loginRepository.save(Login.builder()
                 .email(request.getEmail())
                 .dataHoraLogin(LocalDateTime.now())
                 .build());
-        return AuthResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
+        return AuthResponse.builder()
+                .sucesso(true)
+                .msg("Login realizado com sucesso")
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
     private void saveUserToken(Usuario user, String jwtToken) {
@@ -125,5 +141,6 @@ public class UsuarioService {
         user.setSenha(passwordEncoder.encode(request.getNovaSenha()));
         usuarioRepository.save(user);
     }
+
 }
 
