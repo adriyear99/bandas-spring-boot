@@ -8,19 +8,18 @@ import com.springboot.adriano.repository.musica.ChartRepository;
 import com.springboot.adriano.repository.musica.ItemsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class ChartService {
 
     @Autowired
-    ChartRepository chartRepository;
+    private ChartRepository chartRepository;
 
     @Autowired
-    ItemsRepository itemsRepository;
+    private ItemsRepository itemsRepository;
 
     public Chart sendCollageResult(ChartRequest model) {
         Chart chart = Chart
@@ -30,24 +29,21 @@ public class ChartService {
                 .backgroundColor(model.getBackgroundColor())
                 .items(model.getItems())
                 .selectionType(model.getSelectionType())
-                .creationDate(new Date())
+                .creationDate(LocalDateTime.now())
                 .build();
-        chartRepository.save(chart);
-
+        Chart savedChart = chartRepository.save(chart);
         List<Item> items = new ArrayList<>();
         for(Resultado res : model.getResultados()) {
-            items.add(
-                    Item.builder()
-                    .position(res.getId())
-                    .img(res.getImg())
-                    .track(res.getTrack())
-                    .album(res.getAlbum())
-                    .artist(res.getArtist())
-                    .build()
-            );
+            items.add(Item.builder()
+            .chartId(savedChart)
+            .position(res.getId())
+            .img(res.getImg())
+            .track(res.getTrack())
+            .album(res.getAlbum())
+            .artist(res.getArtist())
+            .build());
         }
         itemsRepository.saveAll(items);
-
         return chart;
     }
 }

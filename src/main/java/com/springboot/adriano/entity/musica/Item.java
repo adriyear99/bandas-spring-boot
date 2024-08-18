@@ -16,11 +16,12 @@ public class Item {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "chart_id", nullable = false)
-    private Long chartId;
+    @ManyToOne
+    @JoinColumn(name = "chart_id", nullable = false)
+    private Chart chartId;
 
     @Column(name = "artist", nullable = false)
     private String artist;

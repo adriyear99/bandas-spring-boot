@@ -26,17 +26,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http.httpBasic(Customizer.withDefaults())
-//            .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**")
-//            .permitAll().anyRequest().authenticated())
-//            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//            .build();
-
-//        http.httpBasic(Customizer.withDefaults())
-//            .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/auth/**")
-//            .permitAll().anyRequest().authenticated());
-//        return http.build();
-
         http.csrf(AbstractHttpConfigurer::disable)
            .authorizeHttpRequests(req -> req.requestMatchers("/api/auth/**").permitAll()
            .anyRequest().authenticated()).sessionManagement(sess -> sess.sessionCreationPolicy(STATELESS))
@@ -45,6 +34,5 @@ public class SecurityConfig {
            .logoutSuccessHandler((req,res,auth) -> SecurityContextHolder.clearContext()));
 
         return http.build();
-
     }
 }
