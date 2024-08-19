@@ -1,5 +1,4 @@
-FROM openjdk:17
-WORKDIR /app
+FROM openjdk:8-jdk-alpine
+ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
-EXPOSE 8080
-CMD ["java", "-jar", "spring-boot-adriano-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
